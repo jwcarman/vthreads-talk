@@ -1,5 +1,7 @@
 package com.callibrity.vthreads.utils;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.IntConsumer;
 
 public class Runnables {
@@ -15,10 +17,23 @@ public class Runnables {
         };
     }
 
-    public static Runnable repeatWithIteration(int n, IntConsumer inner) {
+    public static Runnable locked(Runnable inner) {
+        final Lock lock = new ReentrantLock();
         return () -> {
-            for (int iteration = 0; iteration < n; ++iteration) {
-                inner.accept(iteration);
+            try {
+                lock.lock();
+                inner.run();
+            } finally {
+                lock.unlock();
+            }
+        };
+    }
+
+    public static Runnable monitored(Runnable inner) {
+        final Object monitor = new Object();
+        return () -> {
+            synchronized (monitor) {
+                inner.run();
             }
         };
     }
@@ -28,6 +43,13 @@ public class Runnables {
             for (int iteration = 0; iteration < n; ++iteration) {
                 inner.run();
             }
+        };
+    }
+
+    public static Runnable postDelay(int millis, Runnable inner) {
+        return () -> {
+            inner.run();
+            Sleeps.sleepMillis(millis);
         };
     }
 

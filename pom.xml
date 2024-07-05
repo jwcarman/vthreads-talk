@@ -81,7 +81,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
 						<configuration>
-							<mainClass>com.callibrity.vthreads.examples.CpuBound</mainClass>
+							<mainClass>com.callibrity.vthreads.examples.NonBlocking</mainClass>
 							<systemProperties>
 								<systemProperty>
 									<key>jdk.virtualThreadScheduler.maxPoolSize</key>

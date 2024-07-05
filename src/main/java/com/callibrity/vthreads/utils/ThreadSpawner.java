@@ -12,16 +12,12 @@ public class ThreadSpawner implements AutoCloseable {
         return new ThreadSpawner(Thread.ofVirtual());
     }
 
-    public static ThreadSpawner ofPlatform() {
-        return new ThreadSpawner(Thread.ofPlatform());
-    }
-
     private ThreadSpawner(Thread.Builder threadBuilder) {
         this.threadBuilder = threadBuilder;
     }
 
-    public void spawn(Runnable runnable) {
-        threads.add(threadBuilder.start(runnable));
+    public void spawn(String name, Runnable runnable) {
+        threads.add(threadBuilder.name(name).start(runnable));
     }
 
     public void close() {

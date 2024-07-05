@@ -13,10 +13,14 @@ public class Sleeps {
 
     }
 
-    public static int sleepRandomMillis(int max) {
-        final int sleepTime = rand.nextInt(max);
+    public static int sleepRandomMillis(int min, int max) {
+        final int sleepTime = min + rand.nextInt(max - min);
         sleepMillis(sleepTime);
         return sleepTime;
+    }
+
+    public static int sleepRandomMillis(int max) {
+        return sleepRandomMillis(0, max);
     }
 
     public static void sleep(long amount, TemporalUnit unit) {

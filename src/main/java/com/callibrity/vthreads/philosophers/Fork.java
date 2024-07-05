@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Fork {
-    private final Lock mutex = new ReentrantLock();
+    private final Lock mutex = new ReentrantLock(true);
 
     public void pickUp() {
         mutex.lock();

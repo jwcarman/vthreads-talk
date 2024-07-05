@@ -6,16 +6,15 @@ import org.slf4j.LoggerFactory;
 
 public class Philosopher implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(Philosopher.class);
-    private static final int EAT_TIME_MAX = 500;
+    private static final int EAT_TIME_MAX = 1000;
+    private static final int EAT_TIME_MIN = 500;
 
     private final Fork leftFork;
     private final Fork rightFork;
-    private final String name;
 
-    public Philosopher(Fork leftFork, Fork rightFork, String name) {
+    public Philosopher(Fork leftFork, Fork rightFork) {
         this.leftFork = leftFork;
         this.rightFork = rightFork;
-        this.name = name;
     }
 
     @Override
@@ -28,32 +27,32 @@ public class Philosopher implements Runnable {
     }
 
     private void pickUpLeftFork() {
-        logger.info("{}: {} thinking until left fork is available...", Thread.currentThread(), name);
+        logger.info("{}: thinking until left fork is available...", Thread.currentThread());
         leftFork.pickUp();
-        logger.info("{}: {} picked up left fork.", Thread.currentThread(), name);
+        logger.info("{}: picked up left fork.", Thread.currentThread());
     }
 
     private void pickUpRightFork() {
-        logger.info("{}: {} thinking until right fork is available...", Thread.currentThread(), name);
+        logger.info("{}: thinking until right fork is available...", Thread.currentThread());
         rightFork.pickUp();
-        logger.info("{}: {} picked up right fork.", Thread.currentThread(), name);
+        logger.info("{}: picked up right fork.", Thread.currentThread());
     }
 
     private void putDownLeftFork() {
-        logger.info("{}: {} putting down left fork...", Thread.currentThread(), name);
+        logger.info("{}: putting down left fork...", Thread.currentThread());
         leftFork.putDown();
-        logger.info("{}: {} put down left fork.", Thread.currentThread(), name);
+        logger.info("{}: put down left fork.", Thread.currentThread());
     }
 
     private void putDownRightFork() {
-        logger.info("{}: {} putting down right fork...", Thread.currentThread(), name);
+        logger.info("{}: putting down right fork...", Thread.currentThread());
         rightFork.putDown();
-        logger.info("{}: {} put down right fork.", Thread.currentThread(), name);
+        logger.info("{}: put down right fork.", Thread.currentThread());
     }
 
     private void eat() {
-        logger.info("{}: {} eating...", Thread.currentThread(), name);
-        final int eatTime = Sleeps.sleepRandomMillis(EAT_TIME_MAX);
-        logger.info("{}: {} finished eating after {} milliseconds.", Thread.currentThread(), name, eatTime);
+        logger.info("{}: eating...", Thread.currentThread());
+        final int eatTime = Sleeps.sleepRandomMillis(EAT_TIME_MIN, EAT_TIME_MAX);
+        logger.info("{}: finished eating after {} milliseconds.", Thread.currentThread(), eatTime);
     }
 }
