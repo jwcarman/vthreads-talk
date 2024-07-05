@@ -1,6 +1,6 @@
 package com.callibrity.vthreads.philosophers;
 
-import com.callibrity.vthreads.utils.ThreadSpawner;
+import com.callibrity.vthreads.utils.Spawner;
 
 import static com.callibrity.vthreads.utils.Runnables.repeat;
 
@@ -15,7 +15,7 @@ public class DiningPhilosophers {
             forks[i] = new Fork();
         }
 
-        try(ThreadSpawner spawner = ThreadSpawner.ofVirtual()) {
+        try(Spawner spawner = Spawner.ofVirtual()) {
             for (int i = 0; i < nPhilosophers; i++) {
                 final int minIndex = Math.min(i, (i + 1) % nPhilosophers);
                 final int maxIndex = Math.max(i, (i + 1) % nPhilosophers);

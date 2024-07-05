@@ -1,7 +1,7 @@
 package com.callibrity.vthreads.examples;
 
 import com.callibrity.vthreads.utils.Runnables;
-import com.callibrity.vthreads.utils.ThreadSpawner;
+import com.callibrity.vthreads.utils.Spawner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class Pinning {
     public static void main(String[] args) {
         final Runnable inner = postDelay(1000, () -> logger.info("{}: Time to go to sleep...", Thread.currentThread()));
 
-        try (ThreadSpawner spawner = ThreadSpawner.ofVirtual()) {
+        try (Spawner spawner = Spawner.ofVirtual()) {
             spawner.spawn("locked", repeat(10, Runnables.locked(inner)));
             spawner.spawn("monitored", repeat(10, Runnables.monitored(inner)));
         }

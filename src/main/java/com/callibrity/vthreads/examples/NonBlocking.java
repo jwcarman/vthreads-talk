@@ -1,7 +1,7 @@
 package com.callibrity.vthreads.examples;
 
 import com.callibrity.vthreads.utils.Sleeps;
-import com.callibrity.vthreads.utils.ThreadSpawner;
+import com.callibrity.vthreads.utils.Spawner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ public class NonBlocking {
     private static final Logger logger = LoggerFactory.getLogger(NonBlocking.class);
 
     public static void main(String[] args) {
-        try (ThreadSpawner spawner = ThreadSpawner.ofVirtual()) {
+        try (Spawner spawner = Spawner.ofVirtual()) {
             spawner.spawn("alice", forever(NonBlocking::sleepy));
             spawner.spawn("bob", forever(NonBlocking::sleepy));
             spawner.spawn("chad", serial(
