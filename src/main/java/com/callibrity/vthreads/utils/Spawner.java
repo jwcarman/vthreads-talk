@@ -12,12 +12,24 @@ public class Spawner implements AutoCloseable {
         return new Spawner(Thread.ofVirtual());
     }
 
+    public static Spawner ofVirtual(String prefix) {
+        return new Spawner(Thread.ofVirtual().name(prefix, 0));
+    }
+
+    public static Spawner ofPlatform() {
+        return new Spawner(Thread.ofPlatform());
+    }
+
+    public static Spawner ofPlatform(String prefix) {
+        return new Spawner(Thread.ofPlatform().name(prefix, 0));
+    }
+
     private Spawner(Thread.Builder threadBuilder) {
         this.threadBuilder = threadBuilder;
     }
 
-    public void spawn(String name, Runnable runnable) {
-        threads.add(threadBuilder.name(name).start(runnable));
+    public void spawn(Runnable runnable) {
+        threads.add(threadBuilder.start(runnable));
     }
 
     public void close() {

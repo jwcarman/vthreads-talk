@@ -16,11 +16,19 @@
 	<properties>
 		<java.version>21</java.version>
 
-		<gatling.version>3.11.4</gatling.version>
+		<!-- Dependency Versions -->
+		<gatling.version>3.11.5</gatling.version>
 
-		<gatling-maven-plugin.version>4.9.4</gatling-maven-plugin.version>
+		<!-- Plugin Versions -->
+		<gatling-maven-plugin.version>4.9.6</gatling-maven-plugin.version>
 		<exec-maven-plugin.version>3.3.0</exec-maven-plugin.version>
+		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+
+		<!-- Virtual Thread Configuration for Examples-->
+		<vthreads.parallelism>${cpu.count}</vthreads.parallelism>
+		<vthreads.maxPoolSize>256</vthreads.maxPoolSize>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -60,58 +68,54 @@
 				<artifactId>gatling-maven-plugin</artifactId>
 				<version>${gatling-maven-plugin.version}</version>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>get-cpu-count</id>
+						<goals>
+							<goal>cpu-count</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<configuration>
+					<systemProperties>
+						<systemProperty>
+							<key>jdk.tracePinnedThreads</key>
+							<value>full</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<version>${exec-maven-plugin.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<profiles>
 		<profile>
-			<id>cpu-bound</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<configuration>
-							<mainClass>com.callibrity.vthreads.examples.NonBlocking</mainClass>
-							<systemProperties>
-								<systemProperty>
-									<key>jdk.virtualThreadScheduler.maxPoolSize</key>
-									<value>5</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<id>non-blocking</id>
+			<properties>
+				<exec.mainClass>com.callibrity.vthreads.examples.NonBlocking</exec.mainClass>
+			</properties>
 		</profile>
 		<profile>
 			<id>philosophers</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<configuration>
-							<mainClass>com.callibrity.vthreads.philosophers.DiningPhilosophers</mainClass>
-							<systemProperties>
-								<systemProperty>
-									<key>jdk.virtualThreadScheduler.maxPoolSize</key>
-									<value>1</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<exec.mainClass>com.callibrity.vthreads.philosophers.DiningPhilosophers</exec.mainClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>pinning</id>
+			<properties>
+				<exec.mainClass>com.callibrity.vthreads.examples.Pinning</exec.mainClass>
+			</properties>
 		</profile>
 	</profiles>
 

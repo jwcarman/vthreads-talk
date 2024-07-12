@@ -13,7 +13,7 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 public class TicketsSimulation extends Simulation {
 
     final HttpProtocolBuilder protocol =
-            http.baseUrl("http://localhost:8080")
+            http.baseUrl("http://192.168.1.180:9080")
                     .acceptHeader("application/json")
                     .contentTypeHeader("application/json");
 

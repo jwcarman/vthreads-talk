@@ -15,9 +15,9 @@ public class NonBlocking {
 
     public static void main(String[] args) {
         try (Spawner spawner = Spawner.ofVirtual()) {
-            spawner.spawn("alice", forever(NonBlocking::sleepy));
-            spawner.spawn("bob", forever(NonBlocking::sleepy));
-            spawner.spawn("chad", serial(
+            spawner.spawn(forever(NonBlocking::sleepy));
+            spawner.spawn(forever(NonBlocking::sleepy));
+            spawner.spawn(serial(
                             () -> logger.info("{}: entering an infinite loop...", Thread.currentThread()),
                             forever(noop()))
             );

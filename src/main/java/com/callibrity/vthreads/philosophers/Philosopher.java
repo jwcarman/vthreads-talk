@@ -6,15 +6,15 @@ import org.slf4j.LoggerFactory;
 
 public class Philosopher implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(Philosopher.class);
-    private static final int EAT_TIME_MAX = 1000;
-    private static final int EAT_TIME_MIN = 500;
 
     private final Fork leftFork;
     private final Fork rightFork;
+    private final long eatTimeInMillis;
 
-    public Philosopher(Fork leftFork, Fork rightFork) {
+    public Philosopher(Fork leftFork, Fork rightFork, long eatTimeInMillis) {
         this.leftFork = leftFork;
         this.rightFork = rightFork;
+        this.eatTimeInMillis = eatTimeInMillis;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Philosopher implements Runnable {
 
     private void eat() {
         logger.info("{}: eating...", Thread.currentThread());
-        final int eatTime = Sleeps.sleepRandomMillis(EAT_TIME_MIN, EAT_TIME_MAX);
-        logger.info("{}: finished eating after {} milliseconds.", Thread.currentThread(), eatTime);
+        Sleeps.sleepMillis(eatTimeInMillis);
+        logger.info("{}: finished eating after {} milliseconds.", Thread.currentThread(), eatTimeInMillis);
     }
 }
