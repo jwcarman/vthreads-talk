@@ -2,7 +2,6 @@ package com.callibrity.vthreads.utils;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.IntConsumer;
 
 public class Runnables {
     private Runnables() {
@@ -20,8 +19,8 @@ public class Runnables {
     public static Runnable locked(Runnable inner) {
         final Lock lock = new ReentrantLock();
         return () -> {
+            lock.lock();
             try {
-                lock.lock();
                 inner.run();
             } finally {
                 lock.unlock();
