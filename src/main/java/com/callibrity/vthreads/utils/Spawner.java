@@ -1,12 +1,10 @@
 package com.callibrity.vthreads.utils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Spawner implements AutoCloseable {
-
-    private final Thread.Builder threadBuilder;
-    private final Set<Thread> threads = new HashSet<>();
+    private final ExecutorService executorService;
 
     public static Spawner ofVirtual() {
         return new Spawner(Thread.ofVirtual());
@@ -25,20 +23,14 @@ public class Spawner implements AutoCloseable {
     }
 
     private Spawner(Thread.Builder threadBuilder) {
-        this.threadBuilder = threadBuilder;
+        executorService = Executors.newThreadPerTaskExecutor(threadBuilder.factory());
     }
 
     public void spawn(Runnable runnable) {
-        threads.add(threadBuilder.start(runnable));
+        executorService.execute(runnable);
     }
 
     public void close() {
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                thread.interrupt();
-            }
-        }
+        executorService.close();
     }
 }
