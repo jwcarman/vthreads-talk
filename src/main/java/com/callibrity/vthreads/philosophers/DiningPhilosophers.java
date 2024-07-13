@@ -19,7 +19,7 @@ public class DiningPhilosophers {
             forks[i] = new Fork();
         }
         final long before = System.nanoTime();
-        try (Spawner spawner = Spawner.ofPlatform("philosopher") ) {
+        try (Spawner spawner = Spawner.ofVirtual("philosopher-") ) {
             logger.info("Spawning all philosophers...");
             for (int i = 0; i < nPhilosophers; i++) {
                 final int minIndex = Math.min(i, (i + 1) % nPhilosophers);
