@@ -18,8 +18,8 @@ public class CooperativeScheduling {
             spawner.spawn(forever(CooperativeScheduling::sleepy));
             spawner.spawn(forever(CooperativeScheduling::sleepy));
             spawner.spawn(serial(
-                            () -> logger.info("{}: entering an infinite loop...", Thread.currentThread()),
-                            forever(noop()))
+                    () -> logger.info("{}: entering an infinite loop...", Thread.currentThread()),
+                    forever(noop()))
             );
         }
     }

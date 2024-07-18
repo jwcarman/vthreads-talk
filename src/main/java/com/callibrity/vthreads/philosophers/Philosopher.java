@@ -9,7 +9,7 @@ public class Philosopher implements Runnable {
     private final Fork rightFork;
     private final long eatTimeInMillis;
     private final Loggers.Function loggerFn;
-    
+
     public Philosopher(Fork leftFork, Fork rightFork, long eatTimeInMillis, Loggers.Function loggerFn) {
         this.leftFork = leftFork;
         this.rightFork = rightFork;

@@ -14,16 +14,16 @@ public class UsingScopedValues {
 
     public static void main(String[] args) {
         ScopedValue.runWhere(ACCOUNT_NUMBER, "123456789", () -> {
-            try(var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+            try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
                 scope.fork(UsingScopedValues::reconcileAccount);
                 scope.fork(UsingScopedValues::checkAccountForFraud);
                 scope.fork(UsingScopedValues::settleAccount);
                 scope.join().throwIfFailed();
                 logger.info("Account {} successfully reconciled, checked for fraud, and settled", ACCOUNT_NUMBER.get());
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.error("Interrupted while processing account {}", ACCOUNT_NUMBER.get());
-            } catch(ExecutionException e) {
+            } catch (ExecutionException e) {
                 logger.error("Failed to process account {}", ACCOUNT_NUMBER.get(), e);
             }
         });

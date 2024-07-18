@@ -16,7 +16,7 @@ public class Loggers {
 
     public static Function byName(Class<?> clazz, String name) {
         final Logger logger = LoggerFactory.getLogger(clazz);
-        return switch(name.toLowerCase()) {
+        return switch (name.toLowerCase()) {
             case "debug" -> logger::debug;
             case "error" -> logger::error;
             case "trace" -> logger::trace;

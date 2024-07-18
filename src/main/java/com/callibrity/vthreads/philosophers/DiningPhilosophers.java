@@ -27,7 +27,7 @@ public class DiningPhilosophers {
             forks[i] = new Fork();
         }
         final long before = System.nanoTime();
-        try (Spawner spawner = Spawner.ofVirtual("philosopher-") ) {
+        try (Spawner spawner = Spawner.ofVirtual("philosopher-")) {
             logger.info("Spawning {} philosophers...", nPhilosophers);
             for (int i = 0; i < nPhilosophers; i++) {
                 // Using the "resource hierarchy solution" (aka one left-handed philosopher) to avoid deadlock...
