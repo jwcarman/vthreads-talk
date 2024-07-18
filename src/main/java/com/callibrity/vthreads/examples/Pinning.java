@@ -16,8 +16,8 @@ public class Pinning {
         final Runnable inner = postDelay(1000, () -> logger.info("{}: Time to go to sleep...", Thread.currentThread()));
 
         try (Spawner spawner = Spawner.ofVirtual()) {
-            spawner.spawn(repeat(10, Runnables.locked(inner)));
-            spawner.spawn(repeat(10, Runnables.monitored(inner)));
+            spawner.spawn(repeat(10, Runnables.withLock(postDelay(1000, () -> logger.info("{}: with lock...", Thread.currentThread())))));
+            spawner.spawn(repeat(10, Runnables.withMonitor(postDelay(1000, () -> logger.info("{}: with monitor...", Thread.currentThread())))));
         }
     }
 

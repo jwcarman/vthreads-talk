@@ -1,5 +1,6 @@
 package com.callibrity.vthreads.utils;
 
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,8 +17,18 @@ public class Runnables {
         };
     }
 
-    public static Runnable locked(Runnable inner) {
-        final Lock lock = new ReentrantLock();
+    public static Runnable withSemaphore(Semaphore semaphore, Runnable inner) {
+        return () -> {
+            semaphore.acquireUninterruptibly();
+            try {
+                inner.run();
+            } finally {
+                semaphore.release();
+            }
+        };
+    }
+
+    public static Runnable withLock(Lock lock, Runnable inner) {
         return () -> {
             lock.lock();
             try {
@@ -28,13 +39,20 @@ public class Runnables {
         };
     }
 
-    public static Runnable monitored(Runnable inner) {
-        final Object monitor = new Object();
+    public static Runnable withLock(Runnable inner) {
+        return withLock(new ReentrantLock(), inner);
+    }
+
+    public static Runnable withMonitor(final Object monitor, Runnable inner) {
         return () -> {
             synchronized (monitor) {
                 inner.run();
             }
         };
+    }
+
+    public static Runnable withMonitor(Runnable inner) {
+        return withMonitor(new Object(), inner);
     }
 
     public static Runnable repeat(int n, Runnable inner) {
